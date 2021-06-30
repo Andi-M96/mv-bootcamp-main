@@ -1,0 +1,15 @@
+{
+  "name": "mv-bootcamp-main",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scratch.js",
+  "scripts": {
+    "test": "jest",
+    "test:report": "jest --coverage=true"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jest": "^27.0.6"
+  }
+}
