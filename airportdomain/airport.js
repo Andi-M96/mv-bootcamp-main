@@ -1,22 +1,15 @@
 class Airport {
 
+    static airportList = []
+    
     name = '';
-    terminals = 1;
-    gates = 1;
-    plane_capacity = 12;
-    planes = []; // incoming planes
+    planes = []; 
 
-    constructor(name, terminals, gates) {
+    constructor(name) {
         if (name != undefined) {
             this.name = name
         }
-        if (terminals != undefined) {
-            this.terminals = terminals
-        }
-        if (gates != undefined) {
-            this.gates = gates
-        }
-        this.plane_capacity = terminals*gates;
+       this.constructor.airportList.push(this)
     }
     addPlane(plane) {
         plane.setOrigin(this.name)
@@ -26,6 +19,11 @@ class Airport {
         const index = this.planes.indexOf(plane);
         this.planes.splice(index, 1);
     }
+    static getAirports(){
+        return this.airportList
+    }
 }
+
+    console.log(Airport.getAirports())
 
 module.exports = Airport

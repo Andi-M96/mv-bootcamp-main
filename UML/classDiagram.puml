@@ -1,0 +1,58 @@
+@startuml
+title Airports - Class Diagram
+class Luggage {
+  Int weight
+}  
+class Airport {
+  String airportName
+  }
+
+class BoardingPass {
+  Integer flightNumber
+  }
+
+
+class Flight {
+  Integer flightNumber
+  Date departureTime
+  Date arrivalTime
+  }
+  
+class Security {
+  String name
+  String getName()
+  checkPassenger()
+  }
+  
+  
+class Person {
+  String name
+  String getName()
+}
+class Passenger {
+  String name
+  string getName()
+}
+class Crew {
+String name
+String getName()
+}
+class Plane {
+  String aircraftType
+}
+Flight *-- Plane
+Crew -- Luggage
+Crew o-- Flight
+BoardingPass "1" -- "1" Passenger
+BoardingPass -- Flight
+
+
+Security -- Passenger
+Passenger -- Luggage
+Person <|-- Passenger
+Person <|-- Crew
+Person <|-- Security
+Plane "1" o-- "many" Passenger
+Airport  -- Flight
+Airport "1" -- "many" Plane
+@enduml

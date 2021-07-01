@@ -1,0 +1,54 @@
+@startuml
+left to right direction
+actor Customer
+actor Maintenance
+actor Scooter
+
+rectangle App {
+usecase DownloadApp
+usecase RegisterDetails
+usecase ScanQRCode
+usecase Payment
+usecase MarkAsBroken
+usecase FindChargingStattion
+usecase FindBrokenScooter
+usecase HireScooter
+}
+
+rectangle Docking-Station {
+usecase ConnectToDock
+usecase ChargeScooter
+usecase ShowScooterCharge
+usecase LockUnlockScooter
+
+
+}
+
+rectangle Maintenance-System {
+
+usecase ShowBrokenScooters
+usecase RepairScooter
+}
+
+Customer --> DownloadApp
+Customer --> RegisterDetails
+Customer --> ScanQRCode
+Customer --> FindChargingStattion
+Customer --> Payment
+Customer --> MarkAsBroken
+Customer --> HireScooter
+Customer --> ConnectToDock
+
+Maintenance --> ShowBrokenScooters
+Maintenance --> FindBrokenScooter
+Maintenance --> RepairScooter
+
+Scooter --> ScanQRCode
+Scooter --> RepairScooter
+Scooter --> ChargeScooter
+Scooter --> ShowScooterCharge
+Scooter --> ConnectToDock
+Scooter --> LockUnlockScooter
+
+
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+title ScooterHireApp - Class Diagram
+
+class Person {
+  
+}
+class Customer {
+scanQRCODE()
+}
+class Maintenance {
+String locateScooter
+repairScooter()
+}
+class DockingStation {
+chargeScooter()
+}
+
+
+class Scooter {
+String location
+Integer scooterNumber
+Integer %Charge
+Boolean repairState
+rideScooter()
+
+}
+
+Person <|-- Customer
+Person <|-- Maintenance
+
+Customer "1" -- "1" Scooter : Hires
+Maintenance -- Scooter
+
+
+
+Scooter -- DockingStation
+
+
+@enduml

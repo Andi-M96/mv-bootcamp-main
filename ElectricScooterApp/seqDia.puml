@@ -1,0 +1,22 @@
+@startuml
+actor Customer
+participant ScootHireApp
+actor Maintenance
+participant AppAPI
+
+
+database ScooterDatabase
+Customer -> ScootHireApp: Scan QR Code
+Customer -> ScootHireApp: Confirm ID
+
+ScootHireApp -> ScootHireApp: validate input
+ScootHireApp -> AppAPI: retrieve scooter state
+AppAPI -> Maintenance: Broken Scooters
+Maintenance -> ScooterDatabase: locateScooterDetails(ScooterNumber, %Charge, DMGState, PotentialDocks, Location)
+AppAPI -> ScooterDatabase: locateScooterDetails(ScooterNumber, %Charge, DMGState, PotentialDocks, Location)
+
+ScooterDatabase --> AppAPI: Specific Scooter Data
+AppAPI --> ScootHireApp: Specific Scooter Data
+ScootHireApp --> Customer: Specific Scooter Data
+ScootHireApp --> Maintenance: Specific Scooter Data
+@enduml

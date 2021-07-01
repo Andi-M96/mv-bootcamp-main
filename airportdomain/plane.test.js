@@ -1,5 +1,5 @@
 
-const Passenger = require('./Passenger');
+const Passenger = require('./passenger');
 const Plane = require('./plane');
 
 describe('Plane', () => {
@@ -11,9 +11,9 @@ describe('Plane', () => {
 
     test('boards a passenger', () => {
         const AM007 = new Plane('AM007');
-        const and1 = new Passenger('Andy');
-        AM007.boardPassenger(and1)
-        expect(AM007.passengers).toContainEqual(and1);
+        const pass2 = new Passenger('Andy');
+        AM007.boardPerson(pass2)
+        expect(AM007.passengers).toContainEqual(pass2);
     });
 
     test('sets origin', () => {
@@ -24,7 +24,7 @@ describe('Plane', () => {
 
     test('sets destination', () => {
         const AM007 = new Plane('AM007');
-        AM007.setDestination('BCN');
-        expect(AM007.destination).toBe('BCN');
+        AM007.setDestination('STN');
+        expect(AM007.destination).toBe('STN');
     });
 });

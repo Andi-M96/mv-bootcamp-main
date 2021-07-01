@@ -1,0 +1,17 @@
+@startuml
+actor Customer
+participant AirlineWebsite
+participant BookingsAPI
+database FlightsDatabase
+Customer -> AirlineWebsite: enter booking reference
+Customer -> AirlineWebsite: enter last name
+AirlineWebsite -> AirlineWebsite: validate input
+AirlineWebsite -> BookingsAPI: retrieve booked flight
+BookingsAPI -> FlightsDatabase: locateCustomerFlight(refNumb, from, to, date, time)
+FlightsDatabase --> BookingsAPI: matching flight reference number
+BookingsAPI --> AirlineWebsite: matching flight reference number
+AirlineWebsite --> Customer: matching flight reference number
+@enduml
+
+
+
