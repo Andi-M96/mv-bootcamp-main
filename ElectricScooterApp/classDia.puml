@@ -2,38 +2,67 @@
 title ScooterHireApp - Class Diagram
 
 class Person {
+String name
   
 }
-class Customer {
+class User {
 scanQRCODE()
 }
-class Maintenance {
+class MaintenancePersonnel {
 String locateScooter
 repairScooter()
 }
 class DockingStation {
 chargeScooter()
+lockScooter()
+unlockScooter()
 }
 
 
 class Scooter {
-String location
-Integer scooterNumber
-Integer %Charge
-Boolean repairState
++String location
++Integer scooterNumber
++Integer %Charge
++Boolean repairState
++Integer speedometer
 rideScooter()
+charge()
 
 }
 
-Person <|-- Customer
-Person <|-- Maintenance
+class ScooterHireApp{
+-String accountDetails
++hireScooter()
++distanceTravelled
+-getBillingAmount()
+}
 
-Customer "1" -- "1" Scooter : Hires
-Maintenance -- Scooter
+class ScooterHireAPI{
+-validateDetails()
+-validateCharge()
+-validateRepairState
 
+}
 
+class ScooterHireDatabase{
+-userDetails
++scooterDetails
 
-Scooter -- DockingStation
+}
+
+Person <|-- User
+Person <|-- MaintenancePersonnel
+
+User "1" -- "1" Scooter : Hires
+MaintenancePersonnel --> Scooter: Repairs
+ScooterHireApp <-- User : UserData
+Scooter --> ScooterHireApp:ScooterState
+ScooterHireApp --> ScooterHireAPI
+ScooterHireAPI <--> ScooterHireDatabase: Validates
+User <-- ScooterHireApp : ScooterData
+MaintenancePersonnel <-- ScooterHireAPI: BrokenScooterInfo
+DockingStation <-- ScooterHireAPI:Once Validated, lock/unlock
+Scooter --> DockingStation: Connects
 
 
 @enduml

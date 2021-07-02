@@ -1,0 +1,28 @@
+@startuml
+title ScooterHireApp Returning Scooter - Sequence Diagram
+
+actor User
+
+participant ScooterHireApp
+
+actor Scooter
+
+participant ScooterHireBackendAPI
+participant HireTransaction
+database ScooterHireDatabase
+
+actor ChargingStation
+User -> ScooterHireApp: SignIn()
+ScooterHireApp --> User: scan QRCode
+User -> Scooter: scanQRCode()
+ScooterHireApp -> ScooterHireBackendAPI: startHire(scooterId)
+ScooterHireBackendAPI->Scooter: isWorking()
+ScooterHireBackendAPI->Scooter: isFullCharged()
+ScooterHireBackendAPI->Scooter: getCurrentMileage()
+ScooterHireBackendAPI->HireTransaction: create(registeredUserId, scooterId, currentMileage)
+ScooterHireBackendAPI->ScooterHireDatabase: saveHireTransaction(id)
+ScooterHireApp -> ChargingStation:unlockScooter()
+ChargingStation -> ChargingStation:releaseScooter()
+@enduml
+
+@enduml

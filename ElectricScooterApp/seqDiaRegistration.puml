@@ -1,0 +1,32 @@
+@startuml
+title ScooterHireApp Registration - Sequence Diagram
+actor Customer
+participant ScooterHireApp
+
+participant ScooterAppAPI
+database ScooterHireDatabase
+
+Customer -> ScooterHireApp: User Sign-in
+ScooterHireApp -> ScooterAppAPI: Confirm details
+ScooterAppAPI -> ScooterHireDatabase: Confirm Registered User
+ScooterHireDatabase --> ScooterAppAPI: Confirmed Registered User
+ScooterAppAPI--> ScooterHireApp: Sign-in
+ScooterHireApp -> Customer: Hire Scooter
+
+Customer -> ScooterHireApp: User Register(name,license,bankdeets)
+ScooterHireApp -> ScooterAppAPI: User Register(name,license,bankdeets)
+ScooterAppAPI -> ScooterHireDatabase: Check if already registered
+ScooterAppAPI -> HMRCDatabase: Check if license/ID is valid
+ScooterAppAPI -> CustomersBankDatabase: Check if bank details valid
+ScooterHireDatabase --> ScooterAppAPI: Validate
+HMRCDatabase --> ScooterAppAPI: Validate
+CustomersBankDatabase --> ScooterAppAPI: Validate
+ScooterAppAPI --> ScooterHireApp: Register User
+ScooterHireApp --> Customer: Hire Scooter
+
+
+
+
+database HMRCDatabase
+database CustomersBankDatabase
+@enduml
