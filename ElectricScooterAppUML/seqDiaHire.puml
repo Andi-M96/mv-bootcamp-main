@@ -1,5 +1,5 @@
 @startuml
-title ScooterHireApp Returning Scooter - Sequence Diagram
+title ScooterHireApp Hiring Scooter - Sequence Diagram
 
 actor User
 

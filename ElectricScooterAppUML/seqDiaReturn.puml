@@ -1,0 +1,29 @@
+@startuml
+title ScooterHireApp Returning Scooter - Sequence Diagram
+
+actor User
+User -> Scooter: Returns()
+
+actor Scooter
+Scooter -> ChargingStation: Connects()
+
+actor ChargingStation
+ChargingStation -> ScooterHireApp: JourneyData
+ScooterHireApp -> ScooterHireBackendAPI:JourneyData
+
+participant ScooterHireApp
+
+participant ScooterHireBackendAPI
+ScooterHireBackendAPI -> UsersBank: Transaction
+ScooterHireBackendAPI -> Maintenance: Scooter State
+Maintenance --> Scooter: Repairs()
+ScooterHireBackendAPI --> ScooterHireApp: Return Journey info/transaction
+User <-- ScooterHireApp: Return Journey info/transaction
+participant UsersBank
+
+actor Maintenance
+
+
+
+@enduml
+

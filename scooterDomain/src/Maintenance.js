@@ -1,5 +1,6 @@
 const Person = require('./Person')
 
+
 class Maintenance extends Person {
 
     constructor(name, workID){
@@ -9,9 +10,11 @@ class Maintenance extends Person {
 }
 
 // working progress //
-    repairScooter(){
-        if (isBroken = true)
+    repairScooter(scooter){
+        if (scooter.isBroken) {
+            console.log('Repair Scooter!')
             return true
-    }
+        }
+    } 
 }
 module.exports = Maintenance

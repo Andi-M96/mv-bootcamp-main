@@ -8,14 +8,13 @@ class Scooter {
         this.currentUser = undefined
     }
     reportBroken() {
-        isBroken = true
+        this.isBroken = true
     }
 
     charge() {
         if (!this.isBroken){
+            this.batteryLife = 100
             return true;
-      } else {
-            return false
       } 
         
     }
@@ -23,13 +22,14 @@ class Scooter {
         if (this.batteryLife !=100) {
             console.log('Not Charged!');
             this.charge();
+            return false
         } else {
             this.currentUser = user
             user.currentScooter = this 
             console.log('Journey Started');
+            return true
         }
     }
-
     return() {
         this.batteryLife = 0;
         this.isBroken = true
