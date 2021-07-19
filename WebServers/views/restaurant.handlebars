@@ -1,0 +1,19 @@
+<section>
+    <div class="container">
+        <div class="row">
+            {{#each menus}}
+                <div class="col-md-3">
+                    <div class="card" >
+                        <img  style="width:260px; height: 200px; object-fit: cover;" src="{{this.imageLink}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.name}}</h5>
+                            <p class="card-text">{{this.id}}  <a href="http://localhost:3000/web/restaurant"><button href style="margin-left: 72px;" type="button" class="btn btn-success">View Restaurant</button></a></p>
+                          
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+
+</section>

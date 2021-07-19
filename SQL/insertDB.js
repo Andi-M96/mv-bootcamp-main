@@ -33,7 +33,7 @@ async function loadAndInsert() {
                 try {
                     // for security reasons - very important to use a 
                     // prepared statement here
-                    stmt = db.prepare(`INSERT INTO RESTAURANTS (name, image) VALUES (?, ?)`);
+                    stmt = db.prepare(`INSERT INTO Restaurants (name, imageLink) VALUES (?, ?)`);
                     stmt.run(currentRestaurant.name, currentRestaurant.image);
                 } finally {
                     // IMPORTANT! Close the statement
@@ -43,7 +43,7 @@ async function loadAndInsert() {
                 for (j = 0; j < currentRestaurant.menus.length; j++) {
                     const currentMenu = currentRestaurant.menus[j];
                     try {
-                        stmt = db.prepare(`INSERT INTO MENUS (title, restaurant_id) VALUES (?, ?)`);
+                        stmt = db.prepare(`INSERT INTO Menus (title, RestaurantId) VALUES (?, ?)`);
                         stmt.run(currentMenu.title, i + 1);
                     } finally {
                         // IMPORTANT! Close the statement

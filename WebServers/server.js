@@ -8,10 +8,23 @@ const { request, response } = require("express");
 const { check, validationResult } = require('express-validator');
 const { Sequelize, Op, Model, DataTypes } = require("sequelize");
 const sequelize = new Sequelize("sqlite::memory:");
+const Handlebars = require('handlebars');
+const expressHandlebars = require('express-handlebars');
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+
 
 // convenience - assign express method to app variable
 const app = express();
 const port = 3000;
+
+// setup our templating engine
+const handlebars = expressHandlebars({
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+})
+app.engine('handlebars', handlebars)
+app.set('view engine', 'handlebars')
+
+
 // serve static assets from the public dir
 app.use(express.json());
 app.use(express.static("public"));
@@ -73,9 +86,9 @@ app.get('/restaurants', async (request, response) => {
 });
 
 // Finds all menus for that restaurant id
-app.get('/restaurants/:restaurant_id/menus', async (request, response) => {
+app.get('/restaurants/:id/menus', async (request, response) => {
   const menus = await Menu.findAll({
-    where: { RestaurantId: request.params.restaurant_id },
+    where: { RestaurantId: request.params.id },
   })
   if (!menus) {
     return response.status(404).send("Cannot Find")
@@ -94,6 +107,42 @@ app.get('/menuitems', async (request, response) => {
   const menuItem = await MenuItem.findAll();
   response.status(200).json(menuItem);
 });
+
+// HANDLEBAR GETS
+
+// this route returns HTML for all the restaurants
+app.get('/web/restaurants', async (req, res) => {
+  const restaurants = await Restaurant.findAll()
+  res.render('template', { restaurants })
+})
+// this route returns HTML for a single restaurant
+app.get('/web/restaurants/:id', async (req, res) => {
+  const restaurant = await Restaurant.findByPk(req.params.id)
+  res.render('template', { restaurant })
+})
+
+// this route returns HTML for all the restaurants
+app.get('/web/menus', async (req, res) => {
+  const restaurants = await Restaurant.findAll()
+  res.render('restaurant', { restaurants })
+})
+// this route returns HTML for a single restaurant
+app.get('/web/menus/:id', async (req, res) => {
+  const restaurant = await Restaurant.findByPk(req.params.id)
+  res.render('restaurant', { restaurant })
+})
+
+// // this route returns HTML for all the restaurants
+// app.get('/web/menuItems', async (req, res) => {
+//   const restaurants = await Restaurant.findAll()
+//   res.render('template', { restaurants })
+// })
+// // this route returns HTML for a single restaurant
+// app.get('/web/menuItems/:id', async (req, res) => {
+//   const restaurant = await Restaurant.findByPk(req.params.id)
+//   res.render('restaurant', { restaurant })
+// })
+
 
 // POSTS
 app.post("/restaurants", restaurantValidator, async (request, response) => {
@@ -214,6 +263,12 @@ app.delete("/menuitems/:id", async (request, response) => {
   response.status(200).send("menuItem deleted");
 });
 
+
+// creates/starts the server and then logs to console the string using callback
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
+});
+
 // DELETE WITH ERROR 
 // //delete Restaurant
 // app.delete("/restaurants/:id", async (request, response) => {
@@ -230,10 +285,7 @@ app.delete("/menuitems/:id", async (request, response) => {
 // });
 
 
-// creates/starts the server and then logs to console the string using callback
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+
 /*
  callback function = asynchronous strategy to handle async requests/functions
  promises, async/await can also be used

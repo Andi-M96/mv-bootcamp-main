@@ -13,14 +13,14 @@ function initialise() {
             console.log('starting table creation');
 
             // delete tables if they already exist
-            db.run("DROP TABLE IF EXISTS RESTAURANTS");
-            db.run("DROP TABLE IF EXISTS MENUS");
-            db.run("DROP TABLE IF EXISTS MENUITEMS");
+            db.run("DROP TABLE IF EXISTS Restaurants");
+            db.run("DROP TABLE IF EXISTS Menus");
+            db.run("DROP TABLE IF EXISTS MenuItems");
 
             // create new, empty tables with specific columns and column types
-            db.run("CREATE TABLE RESTAURANTS (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, image TEXT)");
-            db.run("CREATE TABLE MENUS (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, restaurant_id INT, FOREIGN KEY (restaurant_id) REFERENCES RESTAURANTS(id))");
-            db.run("CREATE TABLE MENUITEMS (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price INT, menu_id INT, FOREIGN KEY (menu_id) REFERENCES MENUS(id))");
+            db.run("CREATE TABLE Restaurants (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, imageLink TEXT)");
+            db.run("CREATE TABLE Menus (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, RestaurantId INT, FOREIGN KEY (RestaurantId) REFERENCES RESTAURANTS(id))");
+            db.run("CREATE TABLE MenuItems (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, price INT, menu_id INT, FOREIGN KEY (menu_id) REFERENCES MENUS(id))");
         });
     } finally {
         // very important to always close database connections
