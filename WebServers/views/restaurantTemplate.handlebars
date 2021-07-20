@@ -1,54 +1,41 @@
 
 
-<h1>{{restaurant.name}}
+<h3 style="text-align: center;">{{restaurant.name}} </h3>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{{!-- <section>
+ <section>
     <div class="container">
         <div class="row">
-            {{#each menus}}
-                <div class="col-md-3">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button">Button</button>
-                        <button class="btn btn-primary" type="button">Button</button>
+    
+            {{#each restaurant.menus}}
+               <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="..." class="img-fluid rounded-start" alt="...">
+                        </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.title}}</h5>                             
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Show Menu</a>
+                                </p>  
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                    <div class="card card-body">
+                                        Some placeholder content for the first collapse component of this multi-collapse example. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                                    </div>
+                                    </div>
+                                </div>                 
+                  
+                        </div>
                     </div>
+                    </div>
+                </div>                                         
             {{/each}}
+            
         </div>
     </div>
 
-</section> --}}
+</section>
 
 
-{{!-- <h1>{{restaurant.name}} --}}
-{{!-- <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>   
-</h1>
-<section>
-    {{#each menus}}
-        <article>
-            <h2>{{this.title}}</h2>
-            <dl>
-                {{#each this.items}}
-                    <div>
-                        <dt>{{this.name}}</dt>
-                        <dd>£{{this.price}}</dd>
-                    </div>
-                {{/each}}
-            </dl>
-        </article>
-    {{/each}}
-</section> --}}
+

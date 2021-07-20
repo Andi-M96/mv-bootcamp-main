@@ -7,7 +7,7 @@ const MenuItem = require("./models/MenuItems");
 const { request, response } = require("express");
 const { check, validationResult } = require('express-validator');
 const { Sequelize, Op, Model, DataTypes } = require("sequelize");
-const sequelize = new Sequelize("sqlite::memory:");
+// const sequelize = new Sequelize("sqlite::memory:");
 const Handlebars = require('handlebars');
 const expressHandlebars = require('express-handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
@@ -30,10 +30,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Relationships
-Restaurant.hasMany(Menu);
-Menu.belongsTo(Restaurant);
-Menu.hasMany(MenuItem);
-MenuItem.belongsTo(Menu);
+Restaurant.hasMany(Menu, {as: 'menus', foreignKey: 'restaurant_id'})
+Menu.belongsTo(Restaurant, {foreignKey: 'restaurant_id'})
+Menu.hasMany(MenuItem, {as: 'items', foreignKey: 'menu_id'});
+MenuItem.belongsTo(Menu, {foreignKey: 'menu_id'});
 
 // connecting to DB
 connection
@@ -74,17 +74,28 @@ const menuValidator = [
 // GETS
 
 app.get('/restaurants/:id', async (request, response) => {
-  const restaurant = await Restaurant.findByPk(request.params.id)
-  response.status(200).send(restaurant);
+  const restaurant = await Restaurant.findByPk(
+    request.params.id, {
+      include: [
+        {
+          model: Menu, as: 'menus',
+          include: [{model:MenuItem, as: 'items'}],
+        },
+      ],
+      nest: true
+  });
+  console.log(restaurant)
+  response.render('restaurantTemplate', { restaurant })
+  //response.status(200).send(restaurant);
 });
 
 app.get('/restaurants', async (request, response) => {
   const restaurants = await Restaurant.findAll({
-    include: [Menu]
+    include: [{model: Menu, as: 'menus'}]
   });
-  response.status(200).json(restaurants);
+  //response.status(200).json(restaurants);
+  response.render('homeTemplate', { restaurants })
 });
-
 // Finds all menus for that restaurant id
 app.get('/restaurants/:id/menus', async (request, response) => {
   const menus = await Menu.findAll({
@@ -111,23 +122,23 @@ app.get('/menuitems', async (request, response) => {
 // HANDLEBAR GETS
 
 // this route returns HTML for all the restaurants
-app.get('/web/restaurants', async (req, res) => {
-  const restaurants = await Restaurant.findAll()
-  res.render('homeTemplate', { restaurants })
-})
-// this route returns HTML for a single restaurant
-app.get('/web/restaurants/:id', async (req, res) => { // http://localhost:3000/web/restaurants/1
-  const restaurant = await Restaurant.findOne({
-    where: { id: req.params.id },
-    include: [
-        {
-            model: Menu,
-            include: [MenuItem],
-        },
-    ],
-});
-  res.render('restaurantTemplate', { restaurant })
-})
+// app.get('/web/restaurants', async (req, res) => {
+//   const restaurants = await Restaurant.findAll()
+//   res.render('homeTemplate', { restaurants })
+// })
+// // this route returns HTML for a single restaurant
+// app.get('/web/restaurants/:id', async (req, res) => { // http://localhost:3000/web/restaurants/1
+//   const restaurant = await Restaurant.findOne({
+//     where: { id: req.params.id },
+//     include: [
+//         {
+//             model: Menu,
+//             include: [MenuItem],
+//         },
+//     ],
+// });
+//   res.render('restaurantTemplate', { restaurant })
+// })
 
 // POSTS
 app.post("/restaurants", restaurantValidator, async (request, response) => {
