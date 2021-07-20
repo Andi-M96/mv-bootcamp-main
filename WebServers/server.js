@@ -113,36 +113,21 @@ app.get('/menuitems', async (request, response) => {
 // this route returns HTML for all the restaurants
 app.get('/web/restaurants', async (req, res) => {
   const restaurants = await Restaurant.findAll()
-  res.render('template', { restaurants })
+  res.render('homeTemplate', { restaurants })
 })
 // this route returns HTML for a single restaurant
-app.get('/web/restaurants/:id', async (req, res) => {
-  const restaurant = await Restaurant.findByPk(req.params.id)
-  res.render('template', { restaurant })
+app.get('/web/restaurants/:id', async (req, res) => { // http://localhost:3000/web/restaurants/1
+  const restaurant = await Restaurant.findOne({
+    where: { id: req.params.id },
+    include: [
+        {
+            model: Menu,
+            include: [MenuItem],
+        },
+    ],
+});
+  res.render('restaurantTemplate', { restaurant })
 })
-
-// this route returns HTML for all the restaurants
-app.get('/web/menus', async (req, res) => {
-  const restaurants = await Restaurant.findAll()
-  res.render('restaurant', { restaurants })
-})
-// this route returns HTML for a single restaurant
-app.get('/web/menus/:id', async (req, res) => {
-  const restaurant = await Restaurant.findByPk(req.params.id)
-  res.render('restaurant', { restaurant })
-})
-
-// // this route returns HTML for all the restaurants
-// app.get('/web/menuItems', async (req, res) => {
-//   const restaurants = await Restaurant.findAll()
-//   res.render('template', { restaurants })
-// })
-// // this route returns HTML for a single restaurant
-// app.get('/web/menuItems/:id', async (req, res) => {
-//   const restaurant = await Restaurant.findByPk(req.params.id)
-//   res.render('restaurant', { restaurant })
-// })
-
 
 // POSTS
 app.post("/restaurants", restaurantValidator, async (request, response) => {
