@@ -1,41 +1,54 @@
-
-
 <h3 style="text-align: center;">{{restaurant.name}} </h3>
+<div style="text-align: center;">
+	<img
+		style="width:500px; height: 250px; text-align:center "
+		src="{{restaurant.imageLink}}"
+		alt="..."
+	/>
+</div>
 
- <section>
-    <div class="container">
-        <div class="row">
-    
-            {{#each restaurant.menus}}
-               <div class="card mb-3" style="max-width: 540px;">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="..." class="img-fluid rounded-start" alt="...">
-                        </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{this.title}}</h5>                             
-                                <p>
-                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Show Menu</a>
-                                </p>  
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="multiCollapseExample1">
-                                    <div class="card card-body">
-                                        Some placeholder content for the first collapse component of this multi-collapse example. This panel is hidden by default but revealed when the user activates the relevant trigger.
-                                    </div>
-                                    </div>
-                                </div>                 
-                  
-                        </div>
-                    </div>
-                    </div>
-                </div>                                         
-            {{/each}}
-            
-        </div>
-    </div>
+<section>
+	<div class="container">
+		<div class="row">
+			{{#each restaurant.menus}}
+				<div class="card mb-3" style="max-width: 540px;">
+					<div class="row g-0">
+						<div class="col-md-8">
+							<div style="text-align: center;" class="card-body">
+								<h5 class="card-title">{{this.title}}</h5>
+								<p>
+									<a
+										class="btn btn-warning"
+										data-bs-toggle="collapse"
+										href="#collapseExample"
+										role="button"
+										aria-expanded="false"
+										aria-controls="collapseExample"
+									>
+										Show Menu
+									</a>
+								</p>
+								<div class="col">
+									<div class="collapse" id="collapseExample">
+										<div class="card card-body">
+											<ol class="card-text">
+												{{#each this.items}}
+													<li><b>Dish:</b>
+														{{this.name}}
+														<br />
+														<b>Price:</b>
+														£{{this.price}}</li>
+												{{/each}}
 
+											</ol>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{{/each}}
+		</div>
+	</div>
 </section>
-
-
-
