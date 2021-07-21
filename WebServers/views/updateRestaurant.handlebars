@@ -1,0 +1,28 @@
+
+<div class="container" style="text-align: center;">
+
+<h3>Update Restaurant</h3>
+
+<div class="container" style="text-align: center;"> <img style="width:460px; height: 280px;" src="https://www.hoodbuilder.com/wp-content/uploads/2018/05/remodeling-restaurant-1.jpg" alt="..."></div>
+<div class="row">
+    <div class="col-md-6">
+        <form action="/restaurants/{{restaurant.id}}/updateRestaurant" method="POST">
+            <div style="text-align: center;" class="mb-3">
+                <label for="name" class="form-label">Restaurant name</label>
+                <input type="text" name="name" class="form-control" placeholder="Enter restaurant name here..">   
+            </div>
+
+            <div style="text-align: center;" class="mb-3">
+                <label for="imageLink" class="form-label">Restaurant image</label>
+                <input type="url" name="imageLink" class="form-control" placeholder="Enter image URL here.." >
+            </div>
+    </div>
+    <div class="col-md-6">
+
+    </div>
+    </div>
+
+  <button type="submit" class="btn btn-dark">Submit</button>
+
+</form>
+</div>

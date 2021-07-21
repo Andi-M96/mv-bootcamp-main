@@ -16,6 +16,9 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 // convenience - assign express method to app variable
 const app = express();
 const port = 3000;
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // setup our templating engine
 const handlebars = expressHandlebars({
@@ -26,7 +29,6 @@ app.set('view engine', 'handlebars')
 
 
 // serve static assets from the public dir
-app.use(express.json());
 app.use(express.static("public"));
 
 // Relationships
@@ -74,6 +76,7 @@ const menuValidator = [
 // GETS
 
 app.get('/restaurants/:id', async (request, response) => {
+  const restaurants = await Restaurant.findAll()
   const restaurant = await Restaurant.findByPk(
     request.params.id, {
       include: [
@@ -85,7 +88,7 @@ app.get('/restaurants/:id', async (request, response) => {
       nest: true
   });
   console.log(restaurant)
-  response.render('restaurantTemplate', { restaurant })
+  response.render('restaurantTemplate', { restaurant, restaurants })
   //response.status(200).send(restaurant);
 });
 
@@ -96,6 +99,19 @@ app.get('/restaurants', async (request, response) => {
   //response.status(200).json(restaurants);
   response.render('homeTemplate', { restaurants })
 });
+
+app.get("/addRestaurant", async (request, response) => {
+  const restaurants = await Restaurant.findAll()
+	response.render("addRestaurant", { restaurants });
+});
+
+app.get("/updateRestaurant/:id", async (request, response) => {
+  const restaurant= await Restaurant.findByPk(request.params.id)
+  const restaurants = await Restaurant.findAll()
+  console.log(restaurant)
+	response.render("updateRestaurant", { restaurant, restaurants });
+});
+
 // Finds all menus for that restaurant id
 app.get('/restaurants/:id/menus', async (request, response) => {
   const menus = await Menu.findAll({
@@ -141,16 +157,17 @@ app.get('/menuitems', async (request, response) => {
 // })
 
 // POSTS
-app.post("/restaurants", restaurantValidator, async (request, response) => {
-  const errors = validationResult(request);
-    if (!errors.isEmpty()) {
-      return response.status(400).json({ errors: errors.array() });
-    }
+app.post("/restaurants", async (request, response) => {
+  // const errors = validationResult(request);
+  //   if (!errors.isEmpty()) {
+  //     return response.status(400).json({ errors: errors.array() });
+    // }
+    console.log(request.body)
   const restaurant = await Restaurant.create({
     name: request.body.name,
     imageLink: request.body.imageLink
   })
-  response.status(201).json(restaurant)
+  response.redirect("/restaurants")
 });
 
 app.post("/menus", menuValidator, async (request, response) => {
@@ -214,11 +231,38 @@ app.put("/menuitems/:id", (request, response) => {
 });
 
 // PATCH
-app.patch('/restaurants/:id', async (require, response) => {
-  const restaurant = await Restaurant.findByPk(req.params.id);
-  await restaurant.update(require.body);
-  response.status(200).send("Patched!");
+// app.patch('/restaurants', async (require, response) => {
+//   const restaurant = await Restaurant.findByPk(req.params.id);
+//   await restaurant.update(require.body);
+//   response.status(200).send("Updated!");
+//   response.redirect("/updateRestaurant")
+// });
+
+app.post('/restaurants/:id/updateRestaurant', async (request, response) => {
+//   const restaurant = await Restaurant.findByPk(require.params.id);
+//   await Restaurant.update(require.body);
+//   response.redirect("/restaurants")
+// });
+
+const restaurant = await Restaurant.findByPk(request.params.id);
+	console.log(request.body);
+	if (!restaurant) {
+		return response.status(404).send("NOT FOUND");
+	}
+	await Restaurant.update(
+		{
+			name: request.body.name,
+			imageLink: request.body.imageLink,
+		},
+		{
+			where: { id: request.params.id },
+		}
+	);
+	response.redirect("/restaurants");
 });
+
+
+
 
 app.patch('/menus/:id', async (require, response) => {
   const menu = await Menu.findByPk(require.params.id);

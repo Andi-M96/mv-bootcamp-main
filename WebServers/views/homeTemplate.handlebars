@@ -1,6 +1,6 @@
-<section style="text-align: center;">
-    My {{restaurants.length}} restaurants.
-</section>
+<h1 style="text-align: center; font-family:initial">
+    My {{restaurants.length}} Restaurants
+</h1>
 
 <section>
     <div class="container">
@@ -11,13 +11,37 @@
                         <img  style="width:260px; height: 200px; object-fit: cover;" src="{{this.imageLink}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 style="text-align: center;" class="card-title">{{this.name}}</h5>
-                            <p class="card-text">{{this.id}}  <a href="http://localhost:3000/restaurants/{{this.id}}"><button href style="margin-left: 72px;" type="button" class="btn btn-success">View Restaurant</button></a></p>
-                          
+                            <div style="text-align: center;" class="btn-group" role="group" aria-label="Basic mixed styles example">
+                               <a onclick="callDelete({{this.id}})" href="" ><button type="button" class="btn btn-danger">Delete</button> </a>
+                               
+                               <a href="http://localhost:3000/updateRestaurant/{{this.id}}" ><button type="button" class="btn btn-warning">Update</button> </a>
+                               
+                               <a href="http://localhost:3000/restaurants/{{this.id}}"><button type="button" class="btn btn-success">Menus</button></a>
+                                </div>
+                            {{!-- <p class="card-text">{{this.id}}  <a href="http://localhost:3000/restaurants/{{this.id}}"><button href style="margin-left: 72px;" type="button" class="btn btn-success">View Restaurant</button></a></p>
+                           --}}
                         </div>
                     </div>
                 </div>
             {{/each}}
         </div>
     </div>
+
+        <script>
+        function callDelete(restaurantId) {
+            const fullURL = "/restaurants/" + restaurantId;
+            fetch(fullURL, { method: 'DELETE' })
+                .then(response => {
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
+        }
+  
+    </script>
+
 
 </section>
